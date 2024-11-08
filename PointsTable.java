@@ -1,4 +1,4 @@
-//PointsTable.java
+// PointsTable.java
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -157,6 +157,7 @@ public class PointsTable {
         refreshPointsTable();
     }
 
+
     private void addMatch(String team1, String team2, String result, String winType, int runsScored, double oversFaced, int runsConceded, double oversBowled, int margin) {
         Teams t1 = teamMap.get(team1);
         Teams t2 = teamMap.get(team2);
@@ -216,19 +217,19 @@ public class PointsTable {
         if (lastMatch.result.equals("Team 1 won")) {
             resultForT1 = "Win";
             resultForT2 = "Lose";
+            t1.reverseMatch(resultForT1, lastMatch.runsScored, lastMatch.oversFaced, lastMatch.runsConceded, lastMatch.oversBowled);
+            t2.reverseMatch(resultForT2, lastMatch.runsConceded, lastMatch.oversBowled, lastMatch.runsScored, lastMatch.oversFaced);
         } else if (lastMatch.result.equals("Team 2 won")) {
             resultForT1 = "Lose";
             resultForT2 = "Win";
+            t2.reverseMatch(resultForT2, lastMatch.runsScored, lastMatch.oversFaced, lastMatch.runsConceded, lastMatch.oversBowled);
+            t1.reverseMatch(resultForT1, lastMatch.runsConceded, lastMatch.oversBowled, lastMatch.runsScored, lastMatch.oversFaced);
         } else { // "Tie" or "No Result"
             resultForT1 = lastMatch.result;
             resultForT2 = lastMatch.result;
+            t2.reverseMatch(resultForT2, lastMatch.runsScored, lastMatch.oversFaced, lastMatch.runsConceded, lastMatch.oversBowled);
+            t1.reverseMatch(resultForT1, lastMatch.runsConceded, lastMatch.oversBowled, lastMatch.runsScored, lastMatch.oversFaced);
         }
-
-        // Reverse the match for team 1
-        t1.reverseMatch(resultForT1, lastMatch.runsScored, lastMatch.oversFaced, lastMatch.runsConceded, lastMatch.oversBowled);
-
-        // Reverse the match for team 2 with opposite result
-        t2.reverseMatch(resultForT2, lastMatch.runsConceded, lastMatch.oversBowled, lastMatch.runsScored, lastMatch.oversFaced);
 
         matchHistoryModel.removeRow(matchHistoryModel.getRowCount() - 1);
         matchCounter--;
